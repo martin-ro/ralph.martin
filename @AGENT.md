@@ -2,48 +2,50 @@
 
 ## Project Setup
 ```bash
-# Install dependencies (example for Node.js project)
+composer install
 npm install
-
-# Or for Python project
-pip install -r requirements.txt
-
-# Or for Rust project  
-cargo build
 ```
 
 ## Running Tests
 ```bash
-# Node.js
-npm test
+# Full test suite (lint, refactor, types, unit)
+composer test
 
-# Python
-pytest
+# Individual test commands
+composer test:lint      # Pint + Rector dry-run + npm lint
+composer test:refactor  # Rector dry-run
+composer test:types     # PHPStan analysis
+composer test:arch      # Architecture tests (Pest)
+composer test:unit      # Unit/Feature tests (Pest --parallel)
+```
 
-# Rust
-cargo test
+## Code Formatting
+```bash
+# Auto-fix linting issues
+composer lint           # Rector + Pint + npm lint
+
+# Check without fixing
+composer test:lint
 ```
 
 ## Build Commands
 ```bash
-# Production build
+# Production build (frontend assets)
 npm run build
-# or
-cargo build --release
 ```
 
 ## Development Server
+Herd/Valet handles local serving - no explicit serve command needed.
+
+For full dev environment with queue, logs, and Vite:
 ```bash
-# Start development server
-npm run dev
-# or
-cargo run
+composer dev
 ```
 
 ## Key Learnings
+- Tests run in parallel via Pest - ensure database isolation
 - Update this section when you learn new build optimizations
 - Document any gotchas or special setup requirements
-- Keep track of the fastest test/build cycle
 
 ## Feature Development Quality Standards
 
@@ -51,108 +53,87 @@ cargo run
 
 ### Testing Requirements
 
-- **Minimum Coverage**: 85% code coverage ratio required for all new code
 - **Test Pass Rate**: 100% - all tests must pass, no exceptions
 - **Test Types Required**:
-  - Unit tests for all business logic and services
-  - Integration tests for API endpoints or main functionality
-  - End-to-end tests for critical user workflows
-- **Coverage Validation**: Run coverage reports before marking features complete:
-  ```bash
-  # Examples by language/framework
-  npm run test:coverage
-  pytest --cov=src tests/ --cov-report=term-missing
-  cargo tarpaulin --out Html
-  ```
-- **Test Quality**: Tests must validate behavior, not just achieve coverage metrics
-- **Test Documentation**: Complex test scenarios must include comments explaining the test strategy
+  - Unit tests for business logic and services
+  - Feature tests for HTTP endpoints and controllers
+  - Architecture tests for structural constraints
+- **Test Quality**: Tests must validate behavior, not just exist
+- **Validation**: Run `composer test` before marking features complete
 
 ### Git Workflow Requirements
 
 Before moving to the next feature, ALL changes must be:
 
-1. **Committed with Clear Messages**:
+1. **Feature Branches**:
+   - Create a feature branch from `main` for each new feature
+   - Branch naming: `feature/<feature-name>`, `fix/<issue-name>`
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout -b feature/<feature-name>
+   ```
+
+2. **Committed with Clear Messages**:
    ```bash
    git add .
    git commit -m "feat(module): descriptive message following conventional commits"
    ```
-   - Use conventional commit format: `feat:`, `fix:`, `docs:`, `test:`, `refactor:`, etc.
+   - Use conventional commit format: `feat:`, `fix:`, `docs:`, `test:`, `refactor:`
    - Include scope when applicable: `feat(api):`, `fix(ui):`, `test(auth):`
    - Write descriptive messages that explain WHAT changed and WHY
 
-2. **Pushed to Remote Repository**:
+3. **Pull Request When Complete**:
    ```bash
-   git push origin <branch-name>
+   git push -u origin feature/<feature-name>
+   gh pr create --title "feat: description" --body "Summary of changes"
    ```
-   - Never leave completed features uncommitted
-   - Push regularly to maintain backup and enable collaboration
-   - Ensure CI/CD pipelines pass before considering feature complete
-
-3. **Branch Hygiene**:
-   - Work on feature branches, never directly on `main`
-   - Branch naming convention: `feature/<feature-name>`, `fix/<issue-name>`, `docs/<doc-update>`
-   - Create pull requests for all significant changes
+   - Open PR only after all tests pass
+   - PR targets `main` branch
 
 4. **Ralph Integration**:
    - Update @fix_plan.md with new tasks before starting work
    - Mark items complete in @fix_plan.md upon completion
    - Update PROMPT.md if development patterns change
-   - Test features work within Ralph's autonomous loop
 
 ### Documentation Requirements
 
 **ALL implementation documentation MUST remain synchronized with the codebase**:
 
 1. **Code Documentation**:
-   - Language-appropriate documentation (JSDoc, docstrings, etc.)
+   - PHPDoc blocks for public methods and complex logic
    - Update inline comments when implementation changes
    - Remove outdated comments immediately
 
 2. **Implementation Documentation**:
-   - Update relevant sections in this AGENT.md file
+   - Update relevant sections in this @AGENT.md file
    - Keep build and test commands current
-   - Update configuration examples when defaults change
    - Document breaking changes prominently
 
-3. **README Updates**:
-   - Keep feature lists current
-   - Update setup instructions when dependencies change
-   - Maintain accurate command examples
-   - Update version compatibility information
-
-4. **AGENT.md Maintenance**:
+3. **@AGENT.md Maintenance**:
    - Add new build patterns to relevant sections
    - Update "Key Learnings" with new insights
    - Keep command examples accurate and tested
-   - Document new testing patterns or quality gates
 
 ### Feature Completion Checklist
 
 Before marking ANY feature as complete, verify:
 
-- [ ] All tests pass with appropriate framework command
-- [ ] Code coverage meets 85% minimum threshold
-- [ ] Coverage report reviewed for meaningful test quality
-- [ ] Code formatted according to project standards
-- [ ] Type checking passes (if applicable)
+- [ ] All tests pass (`composer test`)
+- [ ] Code formatted (`composer lint`)
 - [ ] All changes committed with conventional commit messages
-- [ ] All commits pushed to remote repository
+- [ ] Feature branch pushed to remote
+- [ ] Pull request created targeting `main`
 - [ ] @fix_plan.md task marked as complete
-- [ ] Implementation documentation updated
-- [ ] Inline code comments updated or added
-- [ ] AGENT.md updated (if new patterns introduced)
-- [ ] Breaking changes documented
-- [ ] Features tested within Ralph loop (if applicable)
-- [ ] CI/CD pipeline passes
+- [ ] @AGENT.md updated (if new patterns introduced)
 
 ### Rationale
 
 These standards ensure:
-- **Quality**: High test coverage and pass rates prevent regressions
-- **Traceability**: Git commits and @fix_plan.md provide clear history of changes
-- **Maintainability**: Current documentation reduces onboarding time and prevents knowledge loss
-- **Collaboration**: Pushed changes enable team visibility and code review
-- **Reliability**: Consistent quality gates maintain production stability
+- **Quality**: Test pass rates prevent regressions
+- **Traceability**: Git commits and @fix_plan.md provide clear history
+- **Review**: PRs enable code review before merging to main
+- **Maintainability**: Current documentation reduces onboarding time
 - **Automation**: Ralph integration ensures continuous development practices
 
 **Enforcement**: AI agents should automatically apply these standards to all feature development tasks without requiring explicit instruction for each task.
