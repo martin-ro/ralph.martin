@@ -7,6 +7,7 @@ This directory contains all feature and system specifications. Each spec defines
 | Spec | Status | Description |
 |------|--------|-------------|
 | [filament-panel.md](filament-panel.md) | Ready | Filament v5 panel setup at root path with login/password reset |
+| [testing-conventions.md](testing-conventions.md) | Ready | Test syntax, organization, and formatting standards |
 
 ## Status Legend
 
