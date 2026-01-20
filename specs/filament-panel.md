@@ -48,6 +48,7 @@ Install and configure Filament v5 as the primary application interface.
 ### Styling
 
 - Primary color: Blue
+- Gray color: Slate
 - Other colors: Filament defaults
 
 ## Implementation Steps

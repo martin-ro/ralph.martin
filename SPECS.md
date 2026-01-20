@@ -106,15 +106,37 @@ External docs, links, resources.
 
 ## Specs to @fix_plan.md
 
-When a spec is marked **Ready**:
+**CRITICAL:** `@fix_plan.md` references specs - it does NOT duplicate spec details.
 
-1. Ralph reads the spec
-2. Ralph creates tasks in `@fix_plan.md` based on implementation steps
-3. Ralph marks spec as **In Progress**
-4. Ralph works through tasks
-5. When all acceptance criteria pass, Ralph marks spec **Implemented**
+### Why Reference, Not Duplicate
 
-Ralph does NOT invent tasks. Tasks come from specs.
+If `@fix_plan.md` contains detailed tasks copied from specs:
+- Spec changes don't update the tasks
+- Ralph works from stale requirements
+- You have to manually sync two files
+
+Instead, `@fix_plan.md` just lists which specs to implement:
+
+```markdown
+# Fix Plan
+
+## Tasks
+- [ ] filament-panel.md
+- [ ] user-management.md
+
+## Completed
+- [x] testing-conventions.md
+```
+
+### Workflow
+
+1. Ralph checks `@fix_plan.md` for the next spec to implement
+2. Ralph reads the **actual spec file** for requirements and acceptance criteria
+3. Ralph implements according to the spec (always reading fresh)
+4. Ralph marks the spec complete in `@fix_plan.md`
+5. Ralph updates spec status in `specs/README.md` to **Implemented**
+
+This way, spec changes are picked up automatically - Ralph always reads the latest version.
 
 ## Examples
 
