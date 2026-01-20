@@ -47,6 +47,17 @@ composer dev
 - Update this section when you learn new build optimizations
 - Document any gotchas or special setup requirements
 
+## Specifications
+
+**Lookup table**: `specs/README.md`
+
+Before implementing any feature:
+1. Check `specs/README.md` for existing specs
+2. Read relevant spec files for requirements and acceptance criteria
+3. Reference implemented specs when building on existing features
+
+Specs marked as **Implemented** contain working code you can reference and extend.
+
 ## Feature Development Quality Standards
 
 **CRITICAL**: All new features MUST meet the following mandatory requirements before being considered complete.
@@ -92,8 +103,9 @@ Before moving to the next feature, ALL changes must be:
    - PR targets `main` branch
 
 4. **Ralph Integration**:
-   - Update @fix_plan.md with new tasks before starting work
+   - Pick the next task from @fix_plan.md
    - Mark items complete in @fix_plan.md upon completion
+   - Update spec status in `specs/README.md` when feature is implemented
    - Update PROMPT.md if development patterns change
 
 ### Documentation Requirements
@@ -125,6 +137,7 @@ Before marking ANY feature as complete, verify:
 - [ ] Feature branch pushed to remote
 - [ ] Pull request created targeting `main`
 - [ ] @fix_plan.md task marked as complete
+- [ ] Spec status updated in `specs/README.md` (if implementing a spec)
 - [ ] @AGENT.md updated (if new patterns introduced)
 
 ### Rationale
